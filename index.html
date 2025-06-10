@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InvestAlse - AI-Powered Trading Analytics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6c63ff;
+            --secondary: #4a42e8;
+            --accent: #00ffcc;
+            --dark: #121212;
+            --darker: #0a0a0a;
+            --light: #f8f9fa;
+            --gray: #d0d0d0; /* Lightened for better visibility */
+            --light-gray: #2a2a2a;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        body {
+            background-color: var(--darker);
+            color: #fff;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        /* Header */
+        header {
+            background-color: rgba(10, 10, 10, 0.9);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.5);
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--light-gray);
+        }
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .logo i {
+            color: var(--accent);
+        }
+        .logo span {
+            color: #fff;
+        }
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        .nav-links li {
+            margin-left: 30px;
+        }
+        .nav-links a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: 500;
+            transition: color 0.3s;
+            position: relative;
+        }
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--accent);
+            transition: width 0.3s ease;
+        }
+        .nav-links a:hover {
+            color: var(--accent);
+        }
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+        .btn {
+            display: inline-block;
+            padding: 12px 28px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .btn:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            transition: all 0.4s;
+            z-index: -1;
+        }
+        .btn:hover:before {
+            width: 100%;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+        }
+        /* Hero Section */
+        .hero {
+            padding: 180px 0 120px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            background: radial-gradient(circle at top right, rgba(108, 99, 255, 0.1), transparent 70%);
+        }
+        .hero:before {
+            content: '';
+            position: absolute;
+            top: -100px;
+            left: -100px;
+            width: 300px;
+            height: 300px;
+            background: var(--primary);
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.2;
+            z-index: -1;
+        }
+        .hero:after {
+            content: '';
+            position: absolute;
+            bottom: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: var(--accent);
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.15;
+            z-index: -1;
+        }
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+        .hero p {
+            font-size: 1.2rem;
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto 40px;
+            line-height: 1.8;
+        }
+        .coming-soon {
+            background: rgba(0, 255, 204, 0.15);
+            color: var(--accent);
+            padding: 8px 25px;
+            border-radius: 50px;
+            display: inline-block;
+            margin-bottom: 30px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border: 1px solid rgba(0, 255, 204, 0.3);
+        }
+        /* About Section */
+        .section {
+            padding: 120px 0;
+            position: relative;
+        }
+        .section-title {
+            text-align: center;
+            margin-bottom: 70px;
+        }
+        .section-title h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            background: linear-gradient(45deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .section-title p {
+            color: var(--gray);
+            max-width: 700px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+        .about-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+        .about-text {
+            flex: 1;
+        }
+        .about-text h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+        .about-text p {
+            color: var(--gray);
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        .about-image {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            padding: 20px;
+        }
+        .about-image .image-container {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border: 2px solid var(--primary);
+        }
+        .about-image .image-container img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        .about-image .image-container:hover img {
+            transform: scale(1.05);
+        }
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+        .feature-card {
+            background: rgba(30, 30, 30, 0.7);
+            border-radius: 10px;
+            padding: 30px;
+            text-align: center;
+            transition: transform 0.3s;
+            border: 1px solid var(--light-gray);
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary);
+        }
+        .feature-card i {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 20px;
+        }
+        .feature-card h4 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: #fff;
+        }
+        .feature-card p {
+            color: var(--gray);
+            font-size: 0.95rem;
+        }
+        /* Problem Section - FIXED TEXT VISIBILITY */
+        .problem {
+            background: linear-gradient(135deg, rgba(10, 10, 10, 0.9), rgba(20, 20, 20, 0.9)), url('https://images.unsplash.com/photo-1621761191319-c6fb62004040?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-attachment: fixed;
+            position: relative;
+            border-top: 1px solid var(--light-gray);
+            border-bottom: 1px solid var(--light-gray);
+        }
+        .problem:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 10, 10, 0.85);
+        }
+        .problem-content {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+            position: relative;
+            z-index: 2;
+        }
+        .problem-image {
+            flex: 1;
+            text-align: center;
+            padding: 20px;
+        }
+        .problem-image .image-container {
+            position: relative;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.4);
+            border: 2px solid var(--accent);
+        }
+        .problem-image .image-container img {
+            width: 100%;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        .problem-text {
+            flex: 1;
+        }
+        .problem-text h3 {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #fff;
+        }
+        .problem-text p {
+            color: var(--gray); /* Now lighter for better visibility */
+            margin-bottom: 25px;
+            font-size: 1.1rem;
+            line-height: 1.8;
+        }
+        /* CTA Section */
+        .cta {
+            background: linear-gradient(135deg, rgba(108, 99, 255, 0.1), rgba(0, 255, 204, 0.1));
+            border: 1px solid var(--light-gray);
+            color: white;
+            text-align: center;
+            padding: 90px 0;
+            border-radius: 20px;
+            margin: 80px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        .cta:before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(108, 99, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+            z-index: -1;
+        }
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .cta h2 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #fff, var(--accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .cta p {
+            max-width: 600px;
+            margin: 0 auto 40px;
+            font-size: 1.2rem;
+            opacity: 0.9;
+            color: var(--gray);
+        }
+        .cta .btn {
+            background: linear-gradient(135deg, var(--accent), #00c9a7);
+            font-size: 1.1rem;
+            padding: 15px 40px;
+            font-weight: 700;
+            box-shadow: 0 10px 30px rgba(0, 255, 204, 0.3);
+        }
+        /* Footer */
+        footer {
+            background: var(--darker);
+            padding: 100px 0 30px;
+            border-top: 1px solid var(--light-gray);
+        }
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+            gap: 40px;
+        }
+        .footer-col {
+            flex: 1;
+            min-width: 250px;
+        }
+        .footer-col h3 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 25px;
+            color: #fff;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .footer-col h3:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+            border-radius: 3px;
+        }
+        .footer-col p {
+            color: var(--gray);
+            margin-bottom: 25px;
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            background: rgba(255, 255, 255, 0.07);
+            border-radius: 50%;
+            color: #fff;
+            transition: all 0.3s;
+            font-size: 1.2rem;
+        }
+        .social-links a:hover {
+            background: var(--primary);
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(108, 99, 255, 0.3);
+        }
+        .footer-links {
+            list-style: none;
+        }
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+        .footer-links a {
+            text-decoration: none;
+            color: var(--gray);
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        .footer-links a i {
+            color: var(--accent);
+            font-size: 0.9rem;
+        }
+        .copyright {
+            text-align: center;
+            padding-top: 40px;
+            border-top: 1px solid var(--light-gray);
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+        /* Responsive */
+        @media (max-width: 992px) {
+            .hero h1 {
+                font-size: 2.8rem;
+            }
+            .about-content, .problem-content {
+                flex-direction: column;
+            }
+        }
+        @media (max-width: 768px) {
+            .hero {
+                padding: 150px 0 80px;
+            }
+            .hero h1 {
+                font-size: 2.3rem;
+            } 
+            .section-title h2 {
+                font-size: 2.2rem;
+            }
+            .section {
+                padding: 80px 0;
+            }
+            .cta h2 {
+                font-size: 2.2rem;
+            }
+        }
+        @media (max-width: 576px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-chart-line"></i>
+                    Invest<span>Alse</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#problem">Problem</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#" class="btn">Join Waitlist</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="coming-soon">Coming Soon</div>
+            <h1>AI-Powered Trading Analytics Platform</h1>
+            <p>Revolutionizing market analysis with machine learning to provide actionable insights for stocks, crypto, mutual funds, and intraday trading.</p>
+            <a href="#" class="btn">Get Early Access</a>
+        </div>
+    </section>
+    <!-- About Section - FIXED IMAGE CONTAINER -->
+    <section class="section" id="about">
+        <div class="container">
+            <div class="section-title">
+                <h2>About Our Platform</h2>
+                <p>Discover how InvestAlse is transforming investment strategies with AI</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Intelligent Market Analysis</h3>
+                    <p>InvestAlse focuses on developing an AI-powered data analytics platform that provides real-time stock market, crypto, mutual funds, and intraday trend analysis using machine learning to identify patterns, predict market movements, and offer actionable insights tailored to individual investment strategies.</p>
+                    <p>Our advanced algorithms continuously learn from market data to improve prediction accuracy and provide personalized recommendations based on your risk tolerance and investment goals.</p>
+                    <a href="#" class="btn">Learn More</a>
+                </div>
+                <div class="about-image">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=750&q=80" alt="AI Analytics">
+                    </div>
+                </div>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <i class="fas fa-bolt"></i>
+                    <h4>Real-Time Analysis</h4>
+                    <p>Instant insights on market movements as they happen</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-brain"></i>
+                    <h4>Machine Learning</h4>
+                    <p>Self-improving algorithms for better predictions</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-chart-pie"></i>
+                    <h4>Multi-Market</h4>
+                    <p>Covers stocks, crypto, mutual funds, and forex</p>
+                </div>
+                <div class="feature-card">
+                    <i class="fas fa-user-cog"></i>
+                    <h4>Personalized</h4>
+                    <p>Tailored to your investment strategy and risk profile</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Problem Section - FIXED TEXT VISIBILITY -->
+    <section class="section problem" id="problem">
+        <div class="container">
+            <div class="section-title">
+                <h2><!--The Problem We Solve--></h2>
+                <p><!--Addressing key challenges in modern trading environments--></p>
+            </div>
+            <div class="problem-content">
+                <div class="problem-image">
+                    <div class="image-container">
+                        <img src="https://images.unsplash.com/photo-1621761191319-c6fb62004040?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="Trading Problems">
+                    </div>
+                </div>
+                <div class="problem-text">
+                    <h3>Simplifying Complex Trading</h3>
+                    <p>Developing automated and integrated trading environments that work with the power of AI to make trading and scalping easier for traders and investors in various markets such as stocks, crypto, intraday and forex.</p>
+                    <p>Our application focuses on making trading easy and useful by eliminating the noise and providing clear, data-driven signals and recommendations. We bridge the gap between complex market data and actionable trading decisions.</p>
+                    <a href="#" class="btn">Join the Waitlist</a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- CTA Section -->
+    <section class="section">
+        <div class="container">
+            <div class="cta">
+                <h2>Ready to Transform Your Trading?</h2>
+                <p>Be among the first to experience our AI-powered trading analytics platform when we launch.</p>
+                <a href="#" class="btn">Get Early Access</a>
+            </div>
+        </div>
+    </section>
+    <!-- Footer with Social Media Links -->
+    <footer id="contact">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>InvestAlse</h3>
+                    <p>AI-powered data analytics platform for smarter investment decisions across multiple markets.</p>
+                    <div class="social-links">
+                        <a href="https://instagram.com/investalse" target="_blank"><i class="fab fa-instagram"></i></a>
+                        <a href="https://twitter.com/investalse" target="_blank"><i class="fab fa-twitter"></i></a>
+                        <a href="https://facebook.com/investalse" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Quick Links</h3>
+                    <ul class="footer-links">
+                        <li><a href="#about"><i class="fas fa-chevron-right"></i> About</a></li>
+                        <li><a href="#problem"><i class="fas fa-chevron-right"></i> Problem</a></li>
+                        <li><a href="#"><i class="fas fa-chevron-right"></i> Waitlist</a></li>
+                        <li><a href="#contact"><i class="fas fa-chevron-right"></i> Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contact Us</h3>
+                    <p>Have questions? Reach out to our team</p>
+                    <ul class="footer-links">
+                        <li><a href="mailto:investalse@gmail.com"><i class="fas fa-envelope"></i> investalse@gmail.com</a></li>
+                        <li><a href="#"><i class="fas fa-map-marker-alt"></i> Kolkata, West Bengal</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 InvestAlse. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
